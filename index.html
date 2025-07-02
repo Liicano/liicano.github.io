@@ -30,6 +30,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Estudios</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#interests">Intereses</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#repos">Repositorios</a></li>
                     <!-- <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#awards">Awards</a></li> -->
                 </ul>
             </div>
@@ -208,10 +209,45 @@
                     <p class="mb-0"></p>
                 </div>
             </section>
+
+<section id="repos" class="my-5">
+  <div class="container">
+    <h2 class="mb-4">Repositorios</h2>
+    <div id="repo-list" class="row"></div>
+  </div>
+</section>
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+
+        <script>
+  const username = 'Liicano'; // tu usuario de GitHub
+
+  fetch(`https://api.github.com/users/${username}/repos`)
+    .then(res => res.json())
+    .then(repos => {
+      const container = document.getElementById('repo-list');
+      repos.forEach(repo => {
+        const card = document.createElement('div');
+        card.className = 'col-md-6 mb-3';
+        card.innerHTML = `
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">${repo.name}</h5>
+              <p class="card-text">${repo.description || 'Sin descripción disponible'}</p>
+              <a href="${repo.html_url}" style="color: white" class="btn btn-primary" target="_blank">Ver en GitHub</a>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    })
+    .catch(err => {
+      console.error('Error al obtener los repositorios:', err);
+    });
+</script>
+
     </body>
 </html>

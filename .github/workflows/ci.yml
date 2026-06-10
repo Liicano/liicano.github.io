@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    name: Validate HTML & CSS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install html-validate
+        run: npm install -g html-validate
+
+      - name: Validate HTML
+        run: html-validate index.html
+
+      - name: Check required files exist
+        run: |
+          echo "Checking required files..."
+          test -f index.html   && echo "index.html OK"
+          test -f css/styles.css && echo "css/styles.css OK"
+          test -f js/scripts.js  && echo "js/scripts.js OK"
+          echo "All required files present."
